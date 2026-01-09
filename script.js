@@ -71,7 +71,7 @@ function displayRepositories(repos) {
     }
     
     repoContainer.innerHTML = repos.map(repo => `
-        <div class="repo-card" onclick="window.open('${escapeHtml(repo.html_url)}', '_blank')">
+        <div class="repo-card" tabindex="0" role="link" onclick="window.open('${escapeHtml(repo.html_url)}', '_blank')" onkeypress="if(event.key==='Enter'||event.key===' ')window.open('${escapeHtml(repo.html_url)}', '_blank')">
             <h3>
                 <a href="${escapeHtml(repo.html_url)}" target="_blank" onclick="event.stopPropagation()">
                     ${escapeHtml(repo.name)}
