@@ -1,6 +1,13 @@
 // GitHub username - extracted from the repository URL
 const GITHUB_USERNAME = 'carlislerick';
 
+// Helper function to escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // Fetch user profile information
 async function fetchUserProfile() {
     try {
@@ -18,7 +25,7 @@ async function fetchUserProfile() {
         
         const bio = document.getElementById('bio');
         if (data.bio) {
-            bio.innerHTML = `<p>${data.bio}</p>`;
+            bio.innerHTML = `<p>${escapeHtml(data.bio)}</p>`;
         }
         
         // Update header with actual name if available
@@ -64,15 +71,15 @@ function displayRepositories(repos) {
     }
     
     repoContainer.innerHTML = repos.map(repo => `
-        <div class="repo-card" onclick="window.open('${repo.html_url}', '_blank')">
+        <div class="repo-card" onclick="window.open('${escapeHtml(repo.html_url)}', '_blank')">
             <h3>
-                <a href="${repo.html_url}" target="_blank" onclick="event.stopPropagation()">
-                    ${repo.name}
+                <a href="${escapeHtml(repo.html_url)}" target="_blank" onclick="event.stopPropagation()">
+                    ${escapeHtml(repo.name)}
                 </a>
             </h3>
-            <p class="description">${repo.description || 'No description available'}</p>
+            <p class="description">${escapeHtml(repo.description || 'No description available')}</p>
             <div class="meta">
-                ${repo.language ? `<span class="language">${repo.language}</span>` : ''}
+                ${repo.language ? `<span class="language">${escapeHtml(repo.language)}</span>` : ''}
                 ${repo.stargazers_count > 0 ? `<span class="stars">${repo.stargazers_count}</span>` : ''}
                 ${repo.forks_count > 0 ? `<span class="forks">${repo.forks_count}</span>` : ''}
             </div>
